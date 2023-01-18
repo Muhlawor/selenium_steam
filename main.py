@@ -49,8 +49,14 @@ time.sleep(3)
 driver.switch_to.window(driver.window_handles[1])
 # add to cart
 driver.find_element(By.XPATH, "/html/body/div[1]/div[7]/div[6]/div[1]/div[3]/div[1]/div[5]/div[2]/div[1]/div[1]/div/div[2]/div/div[2]/a").click()
+# close tab
+driver.close()
 
 
+# change back to 1-st page
+driver.switch_to.window(driver.window_handles[0])
 
+# open 3-rd link in table
+driver.find_element(By.XPATH, "/html/body/div[5]/div[1]/div[2]/div[2]/div[2]/div[2]/div/div[2]/table/tbody/tr[3]/td[1]/a").click()
 
 time.sleep(6000)
