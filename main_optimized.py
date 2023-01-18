@@ -1,5 +1,6 @@
 import time
 
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -37,10 +38,20 @@ def add_to_cart(sale_index):
                                                                                 f"/html/body/div[5]/div[1]/div[2]/div[2]/div[2]/div[2]/div/div[2]/table/tbody/tr[{sale_index}]/td[1]/a")))
     sale_link.click()
     driver.switch_to.window(driver.window_handles[1])
-    add_to_cart_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.LINK_TEXT, "Add to Cart")))
-    add_to_cart_button.click()
+    try:
+        add_to_cart_button = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.LINK_TEXT, "Add to Cart")))
+        if add_to_cart_button.text == "In Cart":
+            print("Already in Cart")
+            return
+        add_to_cart_button.click()
+    except TimeoutException:
+        print("Already in Cart")
+    time.sleep(1)
     driver.close()
     driver.switch_to.window(driver.window_handles[0])
+
+
+
 
 
 # time.sleep(999)
