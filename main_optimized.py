@@ -45,7 +45,7 @@ def add_to_cart(sale_index):
     sale_link.click()
     driver.switch_to.window(driver.window_handles[1])
     try:
-        add_to_cart_button = WebDriverWait(driver, 10).until(
+        add_to_cart_button = WebDriverWait(driver, 3).until(
             expected_conditions.presence_of_element_located((By.LINK_TEXT, "Add to Cart")))
         if add_to_cart_button.text == "In Cart":
             print("Already in Cart")
@@ -58,18 +58,23 @@ def add_to_cart(sale_index):
     driver.switch_to.window(driver.window_handles[0])
 
 
-num_sales_to_add = 5
+num_sales_to_add = 1
 
-# time.sleep(999)
+
 
 # Apply the filters and sort
 filter_2_year_lows()
 sort_by_price()
 
+#time.sleep(999)
+
 time.sleep(1)
 # Add the first N sales to the cart
 for i in range(1, (num_sales_to_add + 1)):
     add_to_cart(i)
+
+    # Opens a new tab and switches to new tab
+driver.switch_to.new_window('tab')
 
 driver.get("https://store.steampowered.com/cart/")
 
