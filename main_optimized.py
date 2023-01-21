@@ -1,9 +1,8 @@
 import time
-
 from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver import ChromeOptions
 import undetected_chromedriver as uc
 
@@ -34,14 +33,8 @@ def sort_by_price():
 
 # Function to add a specific sale to the cart
 def add_to_cart(sale_index):
-    sale_link = WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.XPATH,
-                                                                                                 f"/html/body/div["
-                                                                                                 f"5]/div[1]/div["
-                                                                                                 f"2]/div[2]/div["
-                                                                                                 f"2]/div[2]/div/div["
-                                                                                                 f"2]/table/tbody/tr["
-                                                                                                 f"{sale_index}]/td["
-                                                                                                 f"1]/a")))
+    sale_link = WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.XPATH, 
+        f"/html/body/div[5]/div[1]/div[2]/div[2]/div[2]/div[2]/div/div[2]/table/tbody/tr[{sale_index}]/td[1]/a")))
     sale_link.click()
     driver.switch_to.window(driver.window_handles[1])
     try:
@@ -53,12 +46,13 @@ def add_to_cart(sale_index):
         add_to_cart_button.click()
     except TimeoutException:
         print("Already in Cart")
-    time.sleep(1)
+    # Wait for the page to be cart
+    WebDriverWait(driver, 10).until(expected_conditions.url_matches("https://store.steampowered.com/cart/"))
     driver.close()
     driver.switch_to.window(driver.window_handles[0])
 
 
-num_sales_to_add = 1
+num_sales_to_add = 10
 
 
 
@@ -68,7 +62,7 @@ sort_by_price()
 
 #time.sleep(999)
 
-time.sleep(1)
+# time.sleep(1)
 # Add the first N sales to the cart
 for i in range(1, (num_sales_to_add + 1)):
     add_to_cart(i)
