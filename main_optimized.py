@@ -16,25 +16,26 @@ driver = uc.Chrome(options=opts)
 # Navigate to the website
 driver.get("https://steamdb.info/sales/?cc=ar&min_reviews=0&min_rating=0&min_discount=0&category=29")
 
-
+#time.sleep(999)
 # Function to filter the sales by 2 year lows
 def filter_2_year_lows():
     filter_button = WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located(
-        (By.XPATH, "/html/body/div[5]/div[1]/div[2]/div[2]/div[1]/form/div/div[4]/div[3]/div")))
+        (By.XPATH, "/html/body/div[5]/div[2]/div[2]/div[2]/div[1]/form/div/div[4]/div[3]/div")))
     filter_button.click()
+
 
 
 # Function to sort the sales by price
 def sort_by_price():
     sort_button = WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located(
-        (By.XPATH, "/html/body/div[5]/div[1]/div[2]/div[2]/div[2]/div[2]/div/div[2]/table/thead/tr/th[5]")))
+        (By.XPATH, "/html/body/div[5]/div[2]/div[2]/div[2]/div[2]/div[2]/div/div[2]/table/thead/tr/th[5]")))
     sort_button.click()
 
 
 # Function to add a specific sale to the cart
 def add_to_cart(sale_index):
     sale_link = WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.XPATH, 
-        f"/html/body/div[5]/div[1]/div[2]/div[2]/div[2]/div[2]/div/div[2]/table/tbody/tr[{sale_index}]/td[1]/a")))
+        f"/html/body/div[5]/div[2]/div[2]/div[2]/div[2]/div[2]/div/div[2]/table/tbody/tr[{sale_index}]/td[1]/a")))
     sale_link.click()
     driver.switch_to.window(driver.window_handles[1])
     try:
@@ -52,7 +53,7 @@ def add_to_cart(sale_index):
     driver.switch_to.window(driver.window_handles[0])
 
 
-num_sales_to_add = 10
+num_sales_to_add = 100
 
 
 
