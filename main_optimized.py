@@ -16,13 +16,13 @@ driver = uc.Chrome(options=opts)
 # Navigate to the website
 driver.get("https://steamdb.info/sales/?cc=ar&min_reviews=0&min_rating=0&min_discount=0&category=29")
 
-#time.sleep(999)
+
+# time.sleep(999)
 # Function to filter the sales by 2 year lows
 def filter_2_year_lows():
     filter_button = WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located(
         (By.CSS_SELECTOR, "#js-discounts-minor > div")))
     filter_button.click()
-
 
 
 # Function to sort the sales by price
@@ -35,7 +35,7 @@ def sort_by_price():
 # Function to add a specific sale to the cart
 def add_to_cart(sale_index):
     sale_link = WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR,
-        f"#DataTables_Table_0 > tbody > tr:nth-child({sale_index}) > td:nth-child(1) > a")))
+                f"#DataTables_Table_0 > tbody > tr:nth-child({sale_index}) > td:nth-child(1) > a")))
     sale_link.click()
     driver.switch_to.window(driver.window_handles[1])
     try:
@@ -55,13 +55,13 @@ def add_to_cart(sale_index):
 
 num_sales_to_add = 10
 
-#time.sleep(999)
+# time.sleep(999)
 
 # Apply the filters and sort
 filter_2_year_lows()
 sort_by_price()
 
-#time.sleep(999)
+# time.sleep(999)
 
 # time.sleep(1)
 # Add the first N sales to the cart
