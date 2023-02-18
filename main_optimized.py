@@ -48,12 +48,15 @@ def add_to_cart(sale_index):
     except TimeoutException:
         print("Already in Cart")
     # Wait for the page to be cart
-    WebDriverWait(driver, 10).until(expected_conditions.url_matches("https://store.steampowered.com/cart/"))
+    try:
+        WebDriverWait(driver, 1).until(expected_conditions.url_matches("https://store.steampowered.com/cart/"))
+    except TimeoutException:
+            print("pass")
     driver.close()
     driver.switch_to.window(driver.window_handles[0])
 
 
-num_sales_to_add = 10
+num_sales_to_add = 20
 
 # time.sleep(999)
 
@@ -61,7 +64,7 @@ num_sales_to_add = 10
 filter_2_year_lows()
 sort_by_price()
 
-# time.sleep(999)
+#time.sleep(999)
 
 # time.sleep(1)
 # Add the first N sales to the cart
