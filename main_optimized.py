@@ -34,32 +34,30 @@ def sort_by_price():
 
 # Function to add a specific sale to the cart based on price
 def add_to_cart(sale_index):
-    # Get the sale's price
     sale_price = WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR,
                                                                                                   f"#DataTables_Table_0 > tbody > tr:nth-child({sale_index}) > td:nth-child(5)"))).text
 
     sale_price = float(sale_price.replace("ARS$ ", "").replace(',', '.'))
 
-    # Check if the sale is below the price threshold
     if sale_price >= max_price:
         print(f"Sale {sale_index} is above the price threshold, skipping...")
         return
 
-    # Add the sale to the cart
     sale_link = WebDriverWait(driver, 10).until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR,
                                                                                                  f"#DataTables_Table_0 > tbody > tr:nth-child({sale_index}) > td:nth-child(1) > a")))
     sale_link.click()
     driver.switch_to.window(driver.window_handles[1])
     try:
         add_to_cart_button = WebDriverWait(driver, 3).until(
-            expected_conditions.presence_of_element_located((By.LINK_TEXT, "Add to Cart")))
-        if add_to_cart_button.text == "In Cart":
+            expected_conditions.presence_of_element_located((By.CSS_SELECTOR, "a[id^='btn_add_to_cart_'] > span")))
+        if "In Cart" in add_to_cart_button.get_attribute("innerHTML"):
             print(f"Sale {sale_index} is already in the cart")
+            driver.close()
+            driver.switch_to.window(driver.window_handles[0])
             return
         add_to_cart_button.click()
     except TimeoutException:
         print(f"Sale {sale_index} is already in the cart")
-    # Wait for the page to be cart
     try:
         WebDriverWait(driver, 1).until(expected_conditions.url_matches("https://store.steampowered.com/cart/"))
     except TimeoutException:
@@ -67,10 +65,13 @@ def add_to_cart(sale_index):
     driver.close()
     driver.switch_to.window(driver.window_handles[0])
 
+
+
+
 # Amount of games to add
 num_sales_to_add = 50
 # Maximum price of game to add
-max_price = 40
+max_price = 50
 # time.sleep(999)
 
 # Apply the filters and sort
